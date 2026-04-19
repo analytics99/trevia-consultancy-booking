@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
+import { BOOKING_CONFIG } from '@/lib/config'
 
-const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM', '04:00 PM']
+const TIME_SLOTS = BOOKING_CONFIG.timeSlots
+const AVAILABLE_DAYS = BOOKING_CONFIG.availableDays
 
 interface CalendarProps {
   selectedDate: string | null
@@ -32,7 +34,7 @@ export default function Calendar({ selectedDate, selectedTime, bookedSlots, onDa
     const d = new Date(viewYear, viewMonth, day)
     const dow = d.getDay()
     const todayNorm = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    return d < todayNorm || dow === 0 || dow === 6
+    return d < todayNorm || !AVAILABLE_DAYS.includes(dow)
   }
 
   function isoDate(day: number) {
