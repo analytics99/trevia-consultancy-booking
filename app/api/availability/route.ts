@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { cookies } from 'next/headers'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/availability - returns available days (0-6)
 // PATCH /api/availability - admin only, update available days
 export async function GET() {

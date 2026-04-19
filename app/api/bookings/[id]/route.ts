@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '@/lib/supabase'
 import { cookies } from 'next/headers'
 
+export const dynamic = 'force-dynamic'
+
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const cookieStore = await cookies()
