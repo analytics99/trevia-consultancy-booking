@@ -18,12 +18,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
   }
 
-  const { data, error } = await getSupabaseAdmin()
-    .from('bookings')
-    .update({ status })
+  const { data, error } = await (getSupabaseAdmin()
+    .from('bookings' as any)
+    .update({ status } as any)
     .eq('id', id)
     .select()
-    .single()
+    .single() as any)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
