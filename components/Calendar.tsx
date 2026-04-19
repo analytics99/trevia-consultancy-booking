@@ -45,7 +45,7 @@ export default function Calendar({ selectedDate, selectedTime, bookedSlots, onDa
     const d = new Date(viewYear, viewMonth, day)
     const dow = d.getDay()
     const todayNorm = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    return d < todayNorm || !AVAILABLE_DAYS.includes(dow)
+    return d < todayNorm || !availableDays.includes(dow)
   }
 
   function isoDate(day: number) {
