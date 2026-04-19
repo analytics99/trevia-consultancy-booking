@@ -3,9 +3,10 @@
 
 export const BOOKING_CONFIG = {
   // Which days of the week are available for bookings
-  // Current: Monday-Friday (business days)
-  // To include weekends: [0, 1, 2, 3, 4, 5, 6]
-  availableDays: [1, 2, 3, 4, 5],
+  // 0=Sunday, 1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday, 6=Saturday
+  // Current: All days (weekends enabled)
+  // Note: This is the default. Can be overridden from admin panel.
+  availableDays: [0, 1, 2, 3, 4, 5, 6],
 
   // Time slots available for booking
   timeSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM', '04:00 PM'],

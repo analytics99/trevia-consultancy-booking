@@ -1,9 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BOOKING_CONFIG } from '@/lib/config'
 
 const TIME_SLOTS = BOOKING_CONFIG.timeSlots
-const AVAILABLE_DAYS = BOOKING_CONFIG.availableDays
 
 interface CalendarProps {
   selectedDate: string | null
@@ -17,6 +16,18 @@ export default function Calendar({ selectedDate, selectedTime, bookedSlots, onDa
   const today = new Date()
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth())
+  const [availableDays, setAvailableDays] = useState<number[]>([0, 1, 2, 3, 4, 5, 6])
+
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      const res = await fetch('/api/availability')
+      if (res.ok) {
+        const data = await res.json()
+        setAvailableDays(data.available_days)
+      }
+    }
+    fetchAvailability()
+  }, [])
 
   const firstDayOfMonth = new Date(viewYear, viewMonth, 1)
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()

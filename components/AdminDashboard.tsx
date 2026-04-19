@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AvailabilitySettings from './AvailabilitySettings'
 
 interface Booking {
   id: string
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all')
+  const [view, setView] = useState<'bookings' | 'settings'>('bookings')
 
   async function fetchBookings() {
     const res = await fetch('/api/bookings')
@@ -71,21 +73,49 @@ export default function AdminDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Bookings Dashboard</h1>
-        <div className="flex gap-2">
-          {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
-            <button key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-colors
-                ${filter === f
-                  ? 'bg-slate-800 dark:bg-amber-500 text-white dark:text-slate-900'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-            >{f}</button>
-          ))}
+      <div className="flex items-center gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Admin Dashboard</h1>
+        <div className="flex gap-2 ml-auto">
+          <button
+            onClick={() => setView('bookings')}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors
+              ${view === 'bookings'
+                ? 'bg-slate-800 dark:bg-amber-500 text-white dark:text-slate-900'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+              }`}
+          >Bookings</button>
+          <button
+            onClick={() => setView('settings')}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors
+              ${view === 'settings'
+                ? 'bg-slate-800 dark:bg-amber-500 text-white dark:text-slate-900'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+              }`}
+          >Settings</button>
         </div>
       </div>
+
+      {view === 'settings' && (
+        <AvailabilitySettings />
+      )}
+
+      {view === 'bookings' && (
+        <>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Manage Bookings</h2>
+            <div className="flex gap-2">
+              {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
+                <button key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-colors
+                    ${filter === f
+                      ? 'bg-slate-800 dark:bg-amber-500 text-white dark:text-slate-900'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    }`}
+                >{f}</button>
+              ))}
+            </div>
+          </div>
 
       {loading ? (
         <p className="text-slate-500 dark:text-slate-400">Loading bookings...</p>
@@ -159,6 +189,8 @@ export default function AdminDashboard() {
             <div className="text-center py-16 text-slate-400 dark:text-slate-600">No bookings found</div>
           )}
         </div>
+      )}
+        </>
       )}
     </div>
   )
