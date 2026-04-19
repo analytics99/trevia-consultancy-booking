@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { getSupabaseAdmin } from '@/lib/supabase'
 import { cookies } from 'next/headers'
 
 // GET /api/availability - returns available days (0-6)
 // PATCH /api/availability - admin only, update available days
 export async function GET() {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('availability')
     .select('available_days')
     .single()
@@ -33,7 +33,7 @@ export async function PATCH(req: NextRequest) {
   }
 
   // Upsert: update if exists, insert if not
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('availability')
     .upsert({ id: 1, available_days }, { onConflict: 'id' })
     .select()

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { getSupabaseAdmin } from '@/lib/supabase'
 import { cookies } from 'next/headers'
 
 export async function GET(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const adminAuth = cookieStore.get('admin_auth')?.value
 
   if (adminAuth === process.env.ADMIN_PASSWORD) {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from('bookings')
       .select('*')
       .order('created_at', { ascending: false })
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (!date) return NextResponse.json({ error: 'date param required' }, { status: 400 })
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('bookings')
     .select('time')
     .eq('date', date)
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
-  const { data: existing } = await supabaseAdmin
+  const { data: existing } = await getSupabaseAdmin()
     .from('bookings')
     .select('id')
     .eq('date', date)
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'This time slot is already booked' }, { status: 409 })
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('bookings')
     .insert({
       name, email, phone,
