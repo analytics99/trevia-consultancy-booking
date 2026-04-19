@@ -100,8 +100,8 @@ export default function BookingForm({ selectedDate, selectedTime, onSuccess }: B
             value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))} />
         </div>
         <div>
-          <label className={labelClass}>Email Address *</label>
-          <input className={inputClass} type="email" placeholder="john@example.com" required
+          <label className={labelClass}>Email Address</label>
+          <input className={inputClass} type="email" placeholder="john@example.com"
             value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))} />
         </div>
         <div>
