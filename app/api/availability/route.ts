@@ -7,10 +7,10 @@ export const dynamic = 'force-dynamic'
 // GET /api/availability - returns available days (0-6)
 // PATCH /api/availability - admin only, update available days
 export async function GET() {
-  const { data, error } = await getSupabaseAdmin()
-    .from('availability')
+  const { data, error } = await (getSupabaseAdmin()
+    .from('availability' as any)
     .select('available_days')
-    .single()
+    .single() as any)
 
   if (error || !data) {
     // Return default if not set: all days
@@ -35,11 +35,11 @@ export async function PATCH(req: NextRequest) {
   }
 
   // Upsert: update if exists, insert if not
-  const { data, error } = await getSupabaseAdmin()
-    .from('availability')
-    .upsert({ id: 1, available_days }, { onConflict: 'id' })
+  const { data, error } = await (getSupabaseAdmin()
+    .from('availability' as any)
+    .upsert({ id: 1, available_days } as any, { onConflict: 'id' })
     .select()
-    .single()
+    .single() as any)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
